@@ -14,12 +14,12 @@
 <body>
 
   <!-- HERO FULLSCREEN -->
-  <section class="hero">
+  <section class="hero fade-slide">
     <img src="images/logo.png" alt="Logo Guante Blanco" class="logo-hero">
   </section>
 
   <!-- TEXTO DE PRESENTACIÓN -->
-  <section class="presentacion">
+  <section class="presentacion fade-slide">
     <p>cuida de lo que te mueve</p>
   </section>
 
@@ -27,17 +27,22 @@
   <div class="main-content">
 
     <!-- SECCIÓN SERVICIOS -->
-    <section class="servicios">
+    <section class="servicios fade-slide">
       <h2>SERVICIOS</h2>
-      <img src="images/services.png" alt="Listado de servicios de limpieza de coches" class="imagen-seccion">
+      <img src="images/services.png" alt="Listado de servicios de limpieza de coches" class="imagen-seccion hover-zoom">
+    </section>
+
+    <!-- SECCIÓN OFERTAS -->
+    <section class="ofertas fade-slide">
+      <h2>OFERTAS VIGENTES</h2>
+      <img src="images/offers.png" alt="Ofertas vigentes" class="imagen-seccion hover-zoom">
     </section>
 
     <!-- SECCIÓN AGENDA -->
-    <section class="agenda">
+    <section class="agenda fade-slide">
       <h2>AGENDA UNA CITA</h2>
-      <img src="images/calendar.png" alt="Calendario" class="imagen-seccion">
 
-      <!-- FORMULARIO PEDIR CITA -->
+      <!-- FORMULARIO PEDIR CITA (MOVIDO ARRIBA DEL CALENDARIO) -->
       <div class="form-toggle">
         <button class="toggle-btn">Pedir una cita</button>
         <form class="toggle-form" id="form-cita" action="https://formsubmit.co/ae11fd4ef1d5609b19290bf8958a1ba1" method="POST">
@@ -49,6 +54,7 @@
           <input type="email" name="email" placeholder="Correo electrónico" required>
           <input type="tel" name="telefono" placeholder="Número de teléfono" required>
           <input type="text" name="modelo" placeholder="Modelo de vehículo" required>
+          <input type="text" name="direccion" placeholder="Dirección donde se realizará el servicio" required>
           
           <!-- Fecha y turno -->
           <label for="fecha">Selecciona la fecha deseada:</label>
@@ -64,21 +70,32 @@
           <!-- Servicios solicitados -->
           <fieldset>
             <legend>Servicios solicitados</legend>
-            <label><input type="checkbox" name="servicios[]" value="Lavado exterior"> Lavado exterior</label><br>
-            <label><input type="checkbox" name="servicios[]" value="Lavado interior"> Lavado interior</label><br>
-            <label><input type="checkbox" name="servicios[]" value="Pulido y encerado"> Pulido y encerado</label><br>
-            <label><input type="checkbox" name="servicios[]" value="Limpieza motor"> Limpieza motor</label>
+            <label><input type="checkbox" name="servicios[]" value="Exterior básico"> Exterior básico</label><br>
+            <label><input type="checkbox" name="servicios[]" value="Interior básico"> Interior básico</label><br>
+            <label><input type="checkbox" name="servicios[]" value="Pack básico"> Pack básico</label><br>
+            <label><input type="checkbox" name="servicios[]" value="Desodorización/ozono"> Desodorización/ozono</label><br>
+            <label><input type="checkbox" name="servicios[]" value="Tratamiento plásticos exteriores"> Tratamiento plásticos exteriores</label><br>
+            <label><input type="checkbox" name="servicios[]" value="Restauración de faros"> Restauración de faros</label><br>
+            <label><input type="checkbox" name="servicios[]" value="Tapicerías profundo"> Tapicerías profundo</label><br>
+            <label><input type="checkbox" name="servicios[]" value="Revitalización de cuero"> Revitalización de cuero</label>
           </fieldset>
 
+          <p>Si deseas usar alguna de las ofertas vigentes, especifícamelo en el mensaje.</p>
           <textarea name="mensaje" rows="4" placeholder="Mensaje adicional (opcional)"></textarea>
           <button type="submit">Pedir una cita</button>
           <p class="mensaje-exito" id="mensaje-cita">El correo ha sido enviado y puesto en cola de revisión, le responderemos lo antes posible.</p>
         </form>
       </div>
+
+      <!-- CALENDARIO DINÁMICO (MOVIDO DESPUÉS DEL FORMULARIO) -->
+      <div id="calendario-container">
+        <div id="calendario"></div>
+      </div>
+
     </section>
 
     <!-- SECCIÓN CONTACTO -->
-    <section class="contacto">
+    <section class="contacto fade-slide">
       <h2>CONTACTO</h2>
       <div class="form-toggle">
         <button class="toggle-btn">Vía e-mail</button>
@@ -103,8 +120,8 @@
 
   </div>
 
-  <!-- SCRIPT PARA FORMULARIOS PLEGABLES Y MENSAJE DE ÉXITO -->
-  <script>
+  <!-- SCRIPT PARA FORMULARIOS, ANIMACIONES Y CALENDARIO -->
+<script>
     // Formularios plegables
     const toggleButtons = document.querySelectorAll('.toggle-btn');
     toggleButtons.forEach(btn => {
@@ -113,42 +130,33 @@
         form.classList.toggle('active');
         btn.textContent = form.classList.contains('active')
           ? 'Cerrar'
-          : btn.textContent.includes('Cita')
-          ? 'Pedir una cita'
-          : 'Vía e-mail';
+          : btn.closest('.agenda') ? 'Pedir una cita' : 'Vía e-mail';
       });
     });
 
-    // Fade con IntersectionObserver
-    const presentacion = document.querySelector('.presentacion');
+    // Fade y slide al hacer scroll
+    const faders = document.querySelectorAll('.fade-slide');
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if(entry.isIntersecting) {
-          presentacion.classList.add('visible');
+          entry.target.classList.add('visible');
           observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.1 });
-    observer.observe(presentacion);
+    faders.forEach(f => observer.observe(f));
 
-    // Mostrar mensaje de éxito sin recargar
+    // Mensaje de éxito sin recargar
     function manejarFormulario(formId, mensajeId) {
       const form = document.getElementById(formId);
       const mensaje = document.getElementById(mensajeId);
 
       form.addEventListener('submit', e => {
         e.preventDefault();
-
-        // Enviar datos a FormSubmit
-        fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form)
-        })
+        fetch(form.action, { method: 'POST', body: new FormData(form) })
         .then(() => {
           mensaje.classList.add('visible');
           form.reset();
-
-          // Ocultar mensaje tras 5 segundos
           setTimeout(() => mensaje.classList.remove('visible'), 5000);
         })
         .catch(() => {
@@ -159,8 +167,75 @@
 
     manejarFormulario('form-cita', 'mensaje-cita');
     manejarFormulario('form-contacto', 'mensaje-contacto');
-  </script>
 
+    // --- CALENDARIO DINÁMICO ---
+    const diasOcupados = {
+      "2025-10-15": "lleno",
+      "2025-10-30": "lleno",
+      "2025-11-05": "lleno"
+    };
+
+    function generarCalendario() {
+      const calendario = document.getElementById('calendario');
+      calendario.innerHTML = '';
+      const hoy = new Date();
+      const meses = [hoy.getMonth(), hoy.getMonth()+1];
+
+      // Espacio entre formulario y primer mes
+      const espacioInicial = document.createElement('div');
+      espacioInicial.className = 'espacio-formulario-calendario';
+      calendario.appendChild(espacioInicial);
+
+      meses.forEach((mesIndex, i) => {
+        const fecha = new Date(hoy.getFullYear(), mesIndex, 1);
+        const mes = fecha.toLocaleString('es-ES', { month: 'long' });
+        const año = fecha.getFullYear();
+
+        const titulo = document.createElement('div');
+        titulo.className = 'mes-calendario';
+        titulo.textContent = `${mes.toUpperCase()} ${año}`;
+        calendario.appendChild(titulo);
+
+        const diasSemana = ['L','M','X','J','V','S','D'];
+        diasSemana.forEach(d => {
+          const diaSemana = document.createElement('div');
+          diaSemana.className = 'dia';
+          diaSemana.textContent = d;
+          calendario.appendChild(diaSemana);
+        });
+
+        const primerDia = fecha.getDay() === 0 ? 6 : fecha.getDay()-1;
+        for(let i=0;i<primerDia;i++){
+          const blank = document.createElement('div');
+          blank.className = 'dia';
+          calendario.appendChild(blank);
+        }
+
+        const ultimoDia = new Date(año, mesIndex+1, 0).getDate();
+        for(let d=1; d<=ultimoDia; d++){
+          const diaDiv = document.createElement('div');
+          diaDiv.className = 'dia';
+          const fechaStr = `${año}-${String(mesIndex+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+          diaDiv.textContent = d;
+
+          const fechaDia = new Date(año, mesIndex, d);
+          if(fechaDia < hoy) diaDiv.classList.add('ayer');
+          if(diasOcupados[fechaStr] && fechaDia >= hoy) diaDiv.classList.add('lleno');
+
+          calendario.appendChild(diaDiv);
+        }
+
+        // Añadir espacio extra después del primer mes (antes del segundo)
+        if (i === 0) {
+          const espacio = document.createElement('div');
+          espacio.className = 'espacio-entre-meses';
+          espacio.style.gridColumn = 'span 7';
+          calendario.appendChild(espacio);
+        }
+      });
+    }
+
+    generarCalendario();
+  </script>
 </body>
 </html>
-

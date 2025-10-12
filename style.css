@@ -198,6 +198,7 @@ label {
 /* REDES */
 .redes {
   margin-top: 30px;
+  margin-bottom: 60px;
   font-size: 1rem;
   color: #e2e1de;
 }
@@ -224,16 +225,95 @@ label {
   font-family: 'Cinzel', serif;
 }
 
-/* Cuando el mensaje aparece */
 .mensaje-exito.visible {
   opacity: 1;
   transform: translateY(0);
   animation: fadeGlow 1.5s ease forwards;
 }
 
-/* Efecto sutil dorado */
 @keyframes fadeGlow {
   0% { text-shadow: 0 0 0px #dbbb59; }
   50% { text-shadow: 0 0 6px #dbbb59; }
   100% { text-shadow: 0 0 0px #dbbb59; }
+}
+
+/* --- CALENDARIO DINÁMICO --- */
+#calendario-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px; /* Añadido espacio arriba del calendario */
+  margin-bottom: 40px;
+}
+
+#calendario {
+  display: grid;
+  grid-template-columns: repeat(7, 50px);
+  grid-auto-rows: 50px;
+  gap: 5px;
+  justify-content: center;
+}
+
+.mes-calendario {
+  grid-column: span 7;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.5rem;
+  color: #dbbb59;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+/* Espacio extra entre meses - CORREGIDO */
+.espacio-entre-meses {
+  grid-column: span 7;
+  height: 40px; /* Más espacio entre meses */
+}
+
+/* Espacio entre el formulario y el primer mes */
+.espacio-formulario-calendario {
+  grid-column: span 7;
+  height: 20px;
+}
+
+.dia {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Cinzel', serif;
+  background-color: #222;
+  color: #e2e1de;
+  border: 1px solid #dbbb59;
+  border-radius: 5px;
+  cursor: default;
+  transition: background-color 0.3s, transform 0.2s, opacity 0.5s;
+}
+
+.dia:hover {
+  transform: scale(1.1);
+  background-color: #333;
+}
+
+.dia.lleno {
+  background-color: #dbbb59;
+  color: #222;
+  font-weight: bold;
+}
+
+.dia.ayer {
+  opacity: 0.4;
+}
+
+.dia:first-child {
+  border-top-left-radius: 5px;
+}
+
+.dia:last-child {
+  border-bottom-right-radius: 5px;
+}
+
+/* Encabezados de días de la semana */
+.dia:nth-child(-n+7) {
+  font-weight: bold;
+  background-color: #1a1a1a;
+  color: #dbbb59;
+  cursor: default;
 }
