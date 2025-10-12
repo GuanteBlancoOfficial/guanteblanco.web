@@ -168,7 +168,7 @@
     manejarFormulario('form-cita', 'mensaje-cita');
     manejarFormulario('form-contacto', 'mensaje-contacto');
 
-    // --- CALENDARIO DINÁMICO ---
+    // --- CALENDARIO DINÁMICO CORREGIDO ---
     const diasOcupados = {
       "2025-10-15": "lleno",
       "2025-10-30": "lleno",
@@ -181,29 +181,27 @@
       const hoy = new Date();
       const meses = [hoy.getMonth(), hoy.getMonth()+1];
 
-      // Espacio entre formulario y primer mes
-      const espacioInicial = document.createElement('div');
-      espacioInicial.className = 'espacio-formulario-calendario';
-      calendario.appendChild(espacioInicial);
-
       meses.forEach((mesIndex, i) => {
         const fecha = new Date(hoy.getFullYear(), mesIndex, 1);
         const mes = fecha.toLocaleString('es-ES', { month: 'long' });
         const año = fecha.getFullYear();
 
+        // Título del mes
         const titulo = document.createElement('div');
         titulo.className = 'mes-calendario';
         titulo.textContent = `${mes.toUpperCase()} ${año}`;
         calendario.appendChild(titulo);
 
+        // Días de la semana
         const diasSemana = ['L','M','X','J','V','S','D'];
         diasSemana.forEach(d => {
           const diaSemana = document.createElement('div');
-          diaSemana.className = 'dia';
+          diaSemana.className = 'dia dia-semana';
           diaSemana.textContent = d;
           calendario.appendChild(diaSemana);
         });
 
+        // Días en blanco al inicio
         const primerDia = fecha.getDay() === 0 ? 6 : fecha.getDay()-1;
         for(let i=0;i<primerDia;i++){
           const blank = document.createElement('div');
@@ -211,6 +209,7 @@
           calendario.appendChild(blank);
         }
 
+        // Días del mes
         const ultimoDia = new Date(año, mesIndex+1, 0).getDate();
         for(let d=1; d<=ultimoDia; d++){
           const diaDiv = document.createElement('div');
@@ -225,11 +224,10 @@
           calendario.appendChild(diaDiv);
         }
 
-        // Añadir espacio extra después del primer mes (antes del segundo)
+        // Espacio entre meses (solo después del primer mes)
         if (i === 0) {
           const espacio = document.createElement('div');
           espacio.className = 'espacio-entre-meses';
-          espacio.style.gridColumn = 'span 7';
           calendario.appendChild(espacio);
         }
       });

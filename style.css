@@ -241,36 +241,36 @@ label {
 #calendario-container {
   display: flex;
   justify-content: center;
-  margin-top: 40px; /* Añadido espacio arriba del calendario */
+  margin-top: 40px;
   margin-bottom: 40px;
 }
 
 #calendario {
   display: grid;
   grid-template-columns: repeat(7, 50px);
-  grid-auto-rows: 50px;
   gap: 5px;
   justify-content: center;
 }
 
 .mes-calendario {
-  grid-column: span 7;
+  grid-column: 1 / -1;
   font-family: 'Cinzel Decorative', serif;
   font-size: 1.5rem;
   color: #dbbb59;
   margin-bottom: 10px;
   text-transform: uppercase;
+  text-align: center;
 }
 
-/* Espacio extra entre meses - CORREGIDO */
+/* Espacio entre meses - SOLUCIÓN CORREGIDA */
 .espacio-entre-meses {
-  grid-column: span 7;
-  height: 40px; /* Más espacio entre meses */
+  grid-column: 1 / -1;
+  height: 30px;
 }
 
-/* Espacio entre el formulario y el primer mes */
+/* Espacio entre formulario y calendario */
 .espacio-formulario-calendario {
-  grid-column: span 7;
+  grid-column: 1 / -1;
   height: 20px;
 }
 
@@ -285,6 +285,8 @@ label {
   border-radius: 5px;
   cursor: default;
   transition: background-color 0.3s, transform 0.2s, opacity 0.5s;
+  width: 50px;
+  height: 50px;
 }
 
 .dia:hover {
@@ -302,16 +304,8 @@ label {
   opacity: 0.4;
 }
 
-.dia:first-child {
-  border-top-left-radius: 5px;
-}
-
-.dia:last-child {
-  border-bottom-right-radius: 5px;
-}
-
 /* Encabezados de días de la semana */
-.dia:nth-child(-n+7) {
+.dia-semana {
   font-weight: bold;
   background-color: #1a1a1a;
   color: #dbbb59;
