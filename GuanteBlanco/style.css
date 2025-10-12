@@ -1,0 +1,239 @@
+/* RESET BÁSICO Y ELIMINAR GAPS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Cinzel', serif;
+  background-color: #1a1a1a;
+  scroll-behavior: smooth;
+}
+
+/* HERO FULLSCREEN */
+.hero {
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  background-image: linear-gradient(to bottom, rgba(26,26,26,0) 80%, #1a1a1a 100%), url('images/landing.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* LOGO MÁS GRANDE */
+.logo-hero {
+  width: 400px;
+  max-width: 60%;
+  height: auto;
+}
+
+/* TEXTO DE PRESENTACIÓN */
+.presentacion {
+  text-align: center;
+  padding: 60px 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.presentacion.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.presentacion p {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2.2rem;
+  color: #dbbb59;
+  margin: 0;
+}
+
+/* CONTENIDO PRINCIPAL */
+.main-content {
+  background-color: #1a1a1a;
+  padding: 60px 20px;
+  margin-top: 0;
+}
+
+/* MÁS ESPACIO ENTRE SECCIONES */
+section {
+  text-align: center;
+  margin-bottom: 140px;
+}
+
+/* TÍTULOS */
+h2 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  color: #dbbb59;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+/* IMÁGENES SECCIONES */
+.imagen-seccion {
+  width: 50%;
+  height: auto;
+  margin: 0 auto 40px auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .imagen-seccion {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .logo-hero {
+    width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .presentacion p {
+    font-size: 1.6rem;
+  }
+
+  .toggle-btn {
+    font-size: 1rem;
+    padding: 10px 16px;
+  }
+}
+
+/* FORMULARIOS PLEGABLES */
+.form-toggle {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.toggle-btn {
+  padding: 14px 24px;
+  font-size: 1.1rem;
+  border: none;
+  background-color: #222;
+  color: #dbbb59;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  font-family: 'Cinzel', serif;
+  min-width: 200px;
+}
+
+.toggle-form {
+  max-width: 500px;
+  margin: 0 auto;
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  font-family: 'Cinzel', serif;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+  overflow: hidden;
+}
+
+.toggle-form.active {
+  display: flex;
+}
+
+input, textarea, fieldset, legend {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  font-family: 'Cinzel', serif;
+}
+
+input, textarea {
+  border: 1px solid #dbbb59;
+  background-color: #222;
+  color: #e2e1de;
+}
+
+fieldset {
+  border: 1px solid #dbbb59;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+legend {
+  color: #dbbb59;
+  font-weight: normal;
+}
+
+label {
+  color: #e2e1de;
+  font-family: 'Cinzel', serif;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* BOTONES FORMULARIO */
+.toggle-form button {
+  background-color: #222;
+  color: #dbbb59;
+  border: none;
+  border-radius: 5px;
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Cinzel', serif;
+}
+
+.toggle-form button:hover {
+  background-color: #555;
+}
+
+/* REDES */
+.redes {
+  margin-top: 30px;
+  font-size: 1rem;
+  color: #e2e1de;
+}
+
+.redes a {
+  color: #dbbb59;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.redes a:hover {
+  text-decoration: underline;
+}
+
+/* --- MENSAJE DE ÉXITO --- */
+.mensaje-exito {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  font-size: 1rem;
+  color: #dbbb59;
+  text-align: center;
+  margin-top: 20px;
+  font-family: 'Cinzel', serif;
+}
+
+/* Cuando el mensaje aparece */
+.mensaje-exito.visible {
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeGlow 1.5s ease forwards;
+}
+
+/* Efecto sutil dorado */
+@keyframes fadeGlow {
+  0% { text-shadow: 0 0 0px #dbbb59; }
+  50% { text-shadow: 0 0 6px #dbbb59; }
+  100% { text-shadow: 0 0 0px #dbbb59; }
+}
