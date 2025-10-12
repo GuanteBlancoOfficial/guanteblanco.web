@@ -195,6 +195,15 @@ label {
   background-color: #555;
 }
 
+/* TEXTO EN FORMULARIOS */
+.toggle-form p {
+  color: #e2e1de;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  text-align: center;
+  margin: 10px 0;
+}
+
 /* REDES */
 .redes {
   margin-top: 30px;
