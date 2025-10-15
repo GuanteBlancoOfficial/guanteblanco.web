@@ -1,4 +1,4 @@
-/* RESET BÁSICO */
+/* RESET BÁSICO Y ELIMINAR GAPS */
 * {
   margin: 0;
   padding: 0;
@@ -7,12 +7,14 @@
 
 html, body {
   height: 100%;
+  margin: 0;
+  padding: 0;
   font-family: 'Cinzel', serif;
   background-color: #1a1a1a;
   scroll-behavior: smooth;
 }
 
-/* HEADER/MENÚ */
+/* --- MENÚ SUPERIOR --- */
 .header {
   position: fixed;
   top: 0;
@@ -22,32 +24,52 @@ html, body {
   opacity: 0;
   transform: translateY(-100%);
   transition: all 0.5s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
-
 .header.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.nav ul {
+.nav {
   display: flex;
   justify-content: center;
-  list-style: none;
+  align-items: center;
+  position: relative;
   padding: 10px 0;
 }
 
-.nav ul li {
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  color: #dbbb59;
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 8px;
+}
+
+.nav ul.menu {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  transition: max-height 0.4s ease;
+}
+
+.nav ul.menu li {
   margin: 0 15px;
 }
 
-.nav ul li a {
+.nav ul.menu li a {
   text-decoration: none;
   color: #dbbb59;
   font-weight: bold;
   transition: color 0.3s;
 }
 
-.nav ul li a:hover {
+.nav ul.menu li a:hover {
   color: #fff;
 }
 
@@ -65,7 +87,6 @@ html, body {
   position: relative;
 }
 
-/* LOGO MÁS GRANDE */
 .logo-hero {
   width: 400px;
   max-width: 60%;
@@ -100,7 +121,7 @@ html, body {
   margin-top: 0;
 }
 
-/* MÁS ESPACIO ENTRE SECCIONES */
+/* SECCIONES */
 section {
   text-align: center;
   margin-bottom: 140px;
@@ -122,6 +143,11 @@ h2 {
   height: auto;
   margin: 0 auto 40px auto;
   display: block;
+  transition: transform 0.3s;
+}
+
+.imagen-seccion.hover-zoom:hover {
+  transform: scale(1.05);
 }
 
 .mapa {
@@ -132,36 +158,30 @@ h2 {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .imagen-seccion {
+  .imagen-seccion { width: 100%; margin-bottom: 30px; }
+  h2 { font-size: 1.8rem; }
+  .logo-hero { width: 300px; }
+
+  /* Menú hamburguesa */
+  .menu-toggle { display: block; }
+  .nav ul.menu {
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
     width: 100%;
-    margin-bottom: 30px;
+    background-color: rgba(26,26,26,0.98);
   }
-
-  .logo-hero {
-    width: 300px;
-  }
-
-  h2 {
-    font-size: 1.8rem;
-  }
+  .nav ul.menu.active { max-height: 500px; }
+  .nav ul.menu li { margin: 10px 0; }
 }
 
 @media (max-width: 480px) {
-  .presentacion p {
-    font-size: 1.6rem;
-  }
-
-  .toggle-btn {
-    font-size: 1rem;
-    padding: 10px 16px;
-  }
+  .presentacion p { font-size: 1.6rem; }
+  .toggle-btn { font-size: 1rem; padding: 10px 16px; }
 }
 
 /* FORMULARIOS PLEGABLES */
-.form-toggle {
-  margin-top: 40px;
-  text-align: center;
-}
+.form-toggle { margin-top: 40px; text-align: center; }
 
 .toggle-btn {
   padding: 14px 24px;
@@ -187,9 +207,7 @@ h2 {
   overflow: hidden;
 }
 
-.toggle-form.active {
-  display: flex;
-}
+.toggle-form.active { display: flex; }
 
 input, textarea, fieldset, legend {
   padding: 10px;
@@ -211,10 +229,7 @@ fieldset {
   margin-bottom: 10px;
 }
 
-legend {
-  color: #dbbb59;
-  font-weight: normal;
-}
+legend { color: #dbbb59; font-weight: normal; }
 
 label {
   color: #e2e1de;
@@ -235,17 +250,15 @@ label {
   font-family: 'Cinzel', serif;
 }
 
-.toggle-form button:hover {
-  background-color: #555;
-}
+.toggle-form button:hover { background-color: #555; }
 
-/* TEXTO EN FORMULARIOS */
+/* TEXTO FORMULARIO */
 .toggle-form p {
   color: #e2e1de;
   font-family: 'Cinzel', serif;
   font-size: 1rem;
   text-align: center;
-  margin: 10px 0;
+  margin-top: 10px;
 }
 
 /* REDES */
@@ -262,9 +275,7 @@ label {
   margin: 0 5px;
 }
 
-.redes a:hover {
-  text-decoration: underline;
-}
+.redes a:hover { text-decoration: underline; }
 
 /* MENSAJE DE ÉXITO */
 .mensaje-exito {
@@ -290,7 +301,7 @@ label {
   100% { text-shadow: 0 0 0px #dbbb59; }
 }
 
-/* CALENDARIO DINÁMICO */
+/* CALENDARIO */
 #calendario-container {
   display: flex;
   justify-content: center;
@@ -315,15 +326,8 @@ label {
   text-align: center;
 }
 
-.espacio-entre-meses {
-  grid-column: 1 / -1;
-  height: 30px;
-}
-
-.espacio-formulario-calendario {
-  grid-column: 1 / -1;
-  height: 20px;
-}
+.espacio-entre-meses { grid-column: 1 / -1; height: 30px; }
+.espacio-formulario-calendario { grid-column: 1 / -1; height: 20px; }
 
 .dia {
   display: flex;
@@ -340,20 +344,9 @@ label {
   height: 50px;
 }
 
-.dia:hover {
-  transform: scale(1.1);
-  background-color: #333;
-}
-
-.dia.lleno {
-  background-color: #dbbb59;
-  color: #222;
-  font-weight: bold;
-}
-
-.dia.ayer {
-  opacity: 0.4;
-}
+.dia:hover { transform: scale(1.1); background-color: #333; }
+.dia.lleno { background-color: #dbbb59; color: #222; font-weight: bold; }
+.dia.ayer { opacity: 0.4; }
 
 .dia-semana {
   font-weight: bold;
@@ -380,6 +373,4 @@ label {
   transition: all 0.3s;
 }
 
-#scrollTopBtn:hover {
-  background-color: #555;
-}
+#scrollTopBtn:hover { background-color: #555; }

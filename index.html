@@ -16,7 +16,8 @@
   <!-- MENÚ SUPERIOR -->
   <header class="header" id="header">
     <nav class="nav">
-      <ul>
+      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+      <ul class="menu">
         <li><a href="#hero">Inicio</a></li>
         <li><a href="#servicios">Servicios</a></li>
         <li><a href="#localizacion">Localización</a></li>
@@ -140,9 +141,9 @@
   <!-- BOTÓN SUBIR -->
   <button id="scrollTopBtn" title="Volver arriba">↑</button>
 
-  <!-- SCRIPT PARA FORMULARIOS, ANIMACIONES Y CALENDARIO -->
+  <!-- SCRIPT PARA FORMULARIOS, MENÚ, ANIMACIONES Y CALENDARIO -->
   <script>
-    // Formularios plegables
+    // Toggle formularios
     const toggleButtons = document.querySelectorAll('.toggle-btn');
     toggleButtons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -154,7 +155,7 @@
       });
     });
 
-    // Fade y slide al hacer scroll
+    // Fade-slide al hacer scroll
     const faders = document.querySelectorAll('.fade-slide');
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -166,7 +167,7 @@
     }, { threshold: 0.1 });
     faders.forEach(f => observer.observe(f));
 
-    // Mensaje de éxito sin recargar
+    // Formularios submit con fetch
     function manejarFormulario(formId, mensajeId) {
       const form = document.getElementById(formId);
       const mensaje = document.getElementById(mensajeId);
@@ -188,19 +189,12 @@
     manejarFormulario('form-cita', 'mensaje-cita');
     manejarFormulario('form-contacto', 'mensaje-contacto');
 
-    // --- CALENDARIO DINÁMICO ---
+    // Calendario
     const diasOcupados = {
-      "2025-10-14": "lleno",
-      "2025-10-15": "lleno",
-      "2025-10-16": "lleno",
-      "2025-10-17": "lleno",
-      "2025-10-18": "lleno",
-      "2025-10-19": "lleno",
-      "2025-10-20": "lleno",
-      "2025-10-21": "lleno",
-      "2025-10-22": "lleno",
-      "2025-10-30": "lleno",
-      "2025-11-05": "lleno"
+      "2025-10-14": "lleno","2025-10-15": "lleno","2025-10-16": "lleno",
+      "2025-10-17": "lleno","2025-10-18": "lleno","2025-10-19": "lleno",
+      "2025-10-20": "lleno","2025-10-21": "lleno","2025-10-22": "lleno",
+      "2025-10-30": "lleno","2025-11-05": "lleno"
     };
 
     function generarCalendario() {
@@ -258,37 +252,34 @@
 
     generarCalendario();
 
-    // SCROLL SUAVE MENÚ
+    // Scroll suave menú
     document.querySelectorAll('.nav a').forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
-        const target = document.querySelector(link.getAttribute('href'));
-        target.scrollIntoView({ behavior: 'smooth' });
+        document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+        if(window.innerWidth < 768) document.querySelector('.menu').classList.remove('active');
       });
     });
 
-    // MENÚ FIJO AL HACER SCROLL
+    // Menú fijo al scroll
     const header = document.getElementById('header');
     const heroHeight = document.querySelector('.hero').offsetHeight;
     window.addEventListener('scroll', () => {
-      if(window.scrollY > heroHeight - 10) {
-        header.classList.add('visible');
-      } else {
-        header.classList.remove('visible');
-      }
+      if(window.scrollY > heroHeight - 10) header.classList.add('visible');
+      else header.classList.remove('visible');
 
-      // Botón subir
       const btn = document.getElementById('scrollTopBtn');
-      if(window.scrollY > 300){
-        btn.style.display = 'block';
-      } else {
-        btn.style.display = 'none';
-      }
+      btn.style.display = (window.scrollY > 300) ? 'block' : 'none';
     });
 
-    // BOTÓN SUBIR
+    // Scroll top
     document.getElementById('scrollTopBtn').addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Toggle menú hamburguesa móvil
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      document.querySelector('.menu').classList.toggle('active');
     });
   </script>
 </body>
