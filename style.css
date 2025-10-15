@@ -1,4 +1,4 @@
-/* RESET BÁSICO Y ELIMINAR GAPS */
+/* RESET BÁSICO */
 * {
   margin: 0;
   padding: 0;
@@ -7,11 +7,48 @@
 
 html, body {
   height: 100%;
-  margin: 0;
-  padding: 0;
   font-family: 'Cinzel', serif;
   background-color: #1a1a1a;
   scroll-behavior: smooth;
+}
+
+/* HEADER/MENÚ */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: rgba(26,26,26,0.95);
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: all 0.5s ease;
+}
+
+.header.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 10px 0;
+}
+
+.nav ul li {
+  margin: 0 15px;
+}
+
+.nav ul li a {
+  text-decoration: none;
+  color: #dbbb59;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.nav ul li a:hover {
+  color: #fff;
 }
 
 /* HERO FULLSCREEN */
@@ -87,18 +124,25 @@ h2 {
   display: block;
 }
 
+.mapa {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .imagen-seccion {
     width: 100%;
     margin-bottom: 30px;
   }
 
-  h2 {
-    font-size: 1.8rem;
-  }
-
   .logo-hero {
     width: 300px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
   }
 }
 
@@ -222,7 +266,7 @@ label {
   text-decoration: underline;
 }
 
-/* --- MENSAJE DE ÉXITO --- */
+/* MENSAJE DE ÉXITO */
 .mensaje-exito {
   opacity: 0;
   transform: translateY(10px);
@@ -246,7 +290,7 @@ label {
   100% { text-shadow: 0 0 0px #dbbb59; }
 }
 
-/* --- CALENDARIO DINÁMICO --- */
+/* CALENDARIO DINÁMICO */
 #calendario-container {
   display: flex;
   justify-content: center;
@@ -271,13 +315,11 @@ label {
   text-align: center;
 }
 
-/* Espacio entre meses - SOLUCIÓN CORREGIDA */
 .espacio-entre-meses {
   grid-column: 1 / -1;
   height: 30px;
 }
 
-/* Espacio entre formulario y calendario */
 .espacio-formulario-calendario {
   grid-column: 1 / -1;
   height: 20px;
@@ -313,10 +355,31 @@ label {
   opacity: 0.4;
 }
 
-/* Encabezados de días de la semana */
 .dia-semana {
   font-weight: bold;
   background-color: #1a1a1a;
   color: #dbbb59;
   cursor: default;
+}
+
+/* BOTÓN SUBIR */
+#scrollTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 100;
+  background-color: #222;
+  color: #dbbb59;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: all 0.3s;
+}
+
+#scrollTopBtn:hover {
+  background-color: #555;
 }

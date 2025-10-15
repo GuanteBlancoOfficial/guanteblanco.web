@@ -13,8 +13,22 @@
 </head>
 <body>
 
+  <!-- MENÚ SUPERIOR -->
+  <header class="header" id="header">
+    <nav class="nav">
+      <ul>
+        <li><a href="#hero">Inicio</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#localizacion">Localización</a></li>
+        <li><a href="#ofertas">Ofertas</a></li>
+        <li><a href="#agenda">Agenda</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
   <!-- HERO FULLSCREEN -->
-  <section class="hero fade-slide">
+  <section class="hero fade-slide" id="hero">
     <img src="images/logo.png" alt="Logo Guante Blanco" class="logo-hero">
   </section>
 
@@ -27,22 +41,28 @@
   <div class="main-content">
 
     <!-- SECCIÓN SERVICIOS -->
-    <section class="servicios fade-slide">
+    <section class="servicios fade-slide" id="servicios">
       <h2>SERVICIOS</h2>
       <img src="images/services.png" alt="Listado de servicios de limpieza de coches" class="imagen-seccion hover-zoom">
     </section>
 
+    <!-- SECCIÓN LOCALIZACIÓN -->
+    <section class="localizacion fade-slide" id="localizacion">
+      <h2>LOCALIZACIÓN</h2>
+      <img src="images/mapa.png" alt="Mapa de localización" class="imagen-seccion mapa">
+    </section>
+
     <!-- SECCIÓN OFERTAS -->
-    <section class="ofertas fade-slide">
+    <section class="ofertas fade-slide" id="ofertas">
       <h2>OFERTAS VIGENTES</h2>
       <img src="images/offers.png" alt="Ofertas vigentes" class="imagen-seccion hover-zoom">
     </section>
 
     <!-- SECCIÓN AGENDA -->
-    <section class="agenda fade-slide">
+    <section class="agenda fade-slide" id="agenda">
       <h2>AGENDA UNA CITA</h2>
 
-      <!-- FORMULARIO PEDIR CITA (MOVIDO ARRIBA DEL CALENDARIO) -->
+      <!-- FORMULARIO PEDIR CITA -->
       <div class="form-toggle">
         <button class="toggle-btn">Pedir una cita</button>
         <form class="toggle-form" id="form-cita" action="https://formsubmit.co/ae11fd4ef1d5609b19290bf8958a1ba1" method="POST">
@@ -56,7 +76,6 @@
           <input type="text" name="modelo" placeholder="Modelo de vehículo" required>
           <input type="text" name="direccion" placeholder="Dirección donde se realizará el servicio" required>
           
-          <!-- Fecha y turno -->
           <label for="fecha">Selecciona la fecha deseada:</label>
           <input type="date" name="fecha" id="fecha" required>
 
@@ -67,7 +86,6 @@
             <label><input type="radio" name="turno" value="Especificado en mensaje"> Especificado en mensaje</label>
           </fieldset>
 
-          <!-- Servicios solicitados -->
           <fieldset>
             <legend>Servicios solicitados</legend>
             <label><input type="checkbox" name="servicios[]" value="Exterior básico"> Exterior básico</label><br>
@@ -87,15 +105,14 @@
         </form>
       </div>
 
-      <!-- CALENDARIO DINÁMICO (MOVIDO DESPUÉS DEL FORMULARIO) -->
+      <!-- CALENDARIO DINÁMICO -->
       <div id="calendario-container">
         <div id="calendario"></div>
       </div>
-
     </section>
 
     <!-- SECCIÓN CONTACTO -->
-    <section class="contacto fade-slide">
+    <section class="contacto fade-slide" id="contacto">
       <h2>CONTACTO</h2>
       <div class="form-toggle">
         <button class="toggle-btn">Vía e-mail</button>
@@ -120,8 +137,11 @@
 
   </div>
 
+  <!-- BOTÓN SUBIR -->
+  <button id="scrollTopBtn" title="Volver arriba">↑</button>
+
   <!-- SCRIPT PARA FORMULARIOS, ANIMACIONES Y CALENDARIO -->
-<script>
+  <script>
     // Formularios plegables
     const toggleButtons = document.querySelectorAll('.toggle-btn');
     toggleButtons.forEach(btn => {
@@ -168,7 +188,7 @@
     manejarFormulario('form-cita', 'mensaje-cita');
     manejarFormulario('form-contacto', 'mensaje-contacto');
 
-    // --- CALENDARIO DINÁMICO CORREGIDO ---
+    // --- CALENDARIO DINÁMICO ---
     const diasOcupados = {
       "2025-10-14": "lleno",
       "2025-10-15": "lleno",
@@ -194,13 +214,11 @@
         const mes = fecha.toLocaleString('es-ES', { month: 'long' });
         const año = fecha.getFullYear();
 
-        // Título del mes
         const titulo = document.createElement('div');
         titulo.className = 'mes-calendario';
         titulo.textContent = `${mes.toUpperCase()} ${año}`;
         calendario.appendChild(titulo);
 
-        // Días de la semana
         const diasSemana = ['L','M','X','J','V','S','D'];
         diasSemana.forEach(d => {
           const diaSemana = document.createElement('div');
@@ -209,7 +227,6 @@
           calendario.appendChild(diaSemana);
         });
 
-        // Días en blanco al inicio
         const primerDia = fecha.getDay() === 0 ? 6 : fecha.getDay()-1;
         for(let i=0;i<primerDia;i++){
           const blank = document.createElement('div');
@@ -217,7 +234,6 @@
           calendario.appendChild(blank);
         }
 
-        // Días del mes
         const ultimoDia = new Date(año, mesIndex+1, 0).getDate();
         for(let d=1; d<=ultimoDia; d++){
           const diaDiv = document.createElement('div');
@@ -232,7 +248,6 @@
           calendario.appendChild(diaDiv);
         }
 
-        // Espacio entre meses (solo después del primer mes)
         if (i === 0) {
           const espacio = document.createElement('div');
           espacio.className = 'espacio-entre-meses';
@@ -242,7 +257,39 @@
     }
 
     generarCalendario();
+
+    // SCROLL SUAVE MENÚ
+    document.querySelectorAll('.nav a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // MENÚ FIJO AL HACER SCROLL
+    const header = document.getElementById('header');
+    const heroHeight = document.querySelector('.hero').offsetHeight;
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > heroHeight - 10) {
+        header.classList.add('visible');
+      } else {
+        header.classList.remove('visible');
+      }
+
+      // Botón subir
+      const btn = document.getElementById('scrollTopBtn');
+      if(window.scrollY > 300){
+        btn.style.display = 'block';
+      } else {
+        btn.style.display = 'none';
+      }
+    });
+
+    // BOTÓN SUBIR
+    document.getElementById('scrollTopBtn').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   </script>
 </body>
-
 </html>
