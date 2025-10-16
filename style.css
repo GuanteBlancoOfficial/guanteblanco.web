@@ -194,6 +194,18 @@ h2 {
   margin-bottom: 15px;
   font-family: 'Cinzel', serif;
   min-width: 200px;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+.toggle-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .toggle-form {
@@ -214,12 +226,27 @@ input, textarea, fieldset, legend {
   font-size: 1rem;
   border-radius: 5px;
   font-family: 'Cinzel', serif;
+  transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #fff;
+  box-shadow: 0 0 5px rgba(219, 187, 89, 0.5);
 }
 
 input, textarea {
   border: 1px solid #dbbb59;
   background-color: #222;
   color: #e2e1de;
+}
+
+input:invalid {
+  border-color: #ff6b6b;
+}
+
+input:valid {
+  border-color: #51cf66;
 }
 
 fieldset {
@@ -248,9 +275,20 @@ label {
   cursor: pointer;
   transition: background-color 0.3s;
   font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
 }
 
-.toggle-form button:hover { background-color: #555; }
+.toggle-form button:hover:not(:disabled) { 
+  background-color: #555;
+  transform: translateY(-2px);
+}
+
+.toggle-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
 
 /* TEXTO FORMULARIO */
 .toggle-form p {
@@ -259,6 +297,7 @@ label {
   font-size: 1rem;
   text-align: center;
   margin-top: 10px;
+  line-height: 1.5;
 }
 
 /* REDES */
@@ -273,9 +312,13 @@ label {
   color: #dbbb59;
   text-decoration: none;
   margin: 0 5px;
+  transition: color 0.3s;
 }
 
-.redes a:hover { text-decoration: underline; }
+.redes a:hover { 
+  color: #fff;
+  text-decoration: underline; 
+}
 
 /* MENSAJE DE ÉXITO */
 .mensaje-exito {
@@ -287,6 +330,10 @@ label {
   text-align: center;
   margin-top: 20px;
   font-family: 'Cinzel', serif;
+  padding: 10px;
+  border: 1px solid #dbbb59;
+  border-radius: 5px;
+  background-color: rgba(219, 187, 89, 0.1);
 }
 
 .mensaje-exito.visible {
@@ -344,9 +391,22 @@ label {
   height: 50px;
 }
 
-.dia:hover { transform: scale(1.1); background-color: #333; }
-.dia.lleno { background-color: #dbbb59; color: #222; font-weight: bold; }
-.dia.ayer { opacity: 0.4; }
+.dia:hover:not(.ayer):not(.lleno):not(.dia-semana) { 
+  transform: scale(1.1); 
+  background-color: #333; 
+}
+
+.dia.lleno { 
+  background-color: #dbbb59; 
+  color: #222; 
+  font-weight: bold;
+  cursor: not-allowed;
+}
+
+.dia.ayer { 
+  opacity: 0.4; 
+  cursor: not-allowed;
+}
 
 .dia-semana {
   font-weight: bold;
@@ -371,6 +431,35 @@ label {
   cursor: pointer;
   font-size: 1.5rem;
   transition: all 0.3s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-#scrollTopBtn:hover { background-color: #555; }
+#scrollTopBtn:hover { 
+  background-color: #555; 
+  transform: translateY(-2px);
+}
+
+/* MEJORAS DE ACCESIBILIDAD */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ESTILOS PARA BOTONES DESHABILITADOS */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* MEJORAS VISUALES PARA FORMULARIOS */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.required::after {
+  content: " *";
+  color: #ff6b6b;
+}
