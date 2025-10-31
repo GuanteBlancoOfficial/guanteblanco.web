@@ -20,6 +20,7 @@
       <ul class="menu">
         <li><a href="#hero">Inicio</a></li>
         <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#modo-operar">Modo de operar</a></li>
         <li><a href="#localizacion">Localización</a></li>
         <li><a href="#ofertas">Ofertas</a></li>
         <li><a href="#agenda">Agenda</a></li>
@@ -45,6 +46,19 @@
     <section class="servicios fade-slide" id="servicios">
       <h2>SERVICIOS</h2>
       <img src="images/services.png" alt="Listado de servicios de limpieza de coches" class="imagen-seccion hover-zoom">
+    </section>
+
+    <!-- NUEVA SECCIÓN MODO DE OPERAR -->
+    <section class="modo-operar fade-slide" id="modo-operar">
+      <h2>Modo de operar</h2>
+      <div class="form-toggle">
+        <button class="toggle-btn">Ver detalles</button>
+        <div class="toggle-form">
+          <p>- En casa: Si su vehículo se encuentra en una cochera, recinto o lugar privado. Se realizarán los servicios ahí bajo autorización del propietario.</p>
+          <p>- Con llaves: En caso de no disponer de un lugar privado para hacer el servicio, el limpiador llevará el vehículo a una instalación local de nuestros socios para realizar el servicio, y una vez acabado se dejará en un punto de recogida acordado. (Queda sujeta una tarifa de 5€ por viaje y la opción de repostar combustible como servicio gratis (con la cuantía de repostaje previamente pagada en mano)).</p>
+          <p>En ambos modos contamos con un seguro que cubre cualquier caso que ocurra durante el proceso laboral.</p>
+        </div>
+      </div>
     </section>
 
     <!-- SECCIÓN LOCALIZACIÓN -->
@@ -80,6 +94,13 @@
           <input type="tel" name="telefono" placeholder="Número de teléfono" required pattern="[0-9]{9}" title="Por favor, introduce un número de teléfono válido (9 dígitos)">
           <input type="text" name="modelo" placeholder="Modelo de vehículo" required minlength="2" maxlength="50">
           <input type="text" name="direccion" placeholder="Dirección donde se realizará el servicio" required minlength="5" maxlength="200">
+
+          <!-- NUEVO CAMPO: Modo de operar -->
+          <fieldset>
+            <legend>Modo de operar</legend>
+            <label><input type="radio" name="modo_operar" value="En casa" required> En casa</label><br>
+            <label><input type="radio" name="modo_operar" value="Con llave"> Con llave</label>
+          </fieldset>
           
           <label for="fecha">Selecciona la fecha deseada:</label>
           <input type="date" name="fecha" id="fecha" required>
@@ -155,12 +176,6 @@
     let fechaMinima = '';
     let fechaMaxima = '';
     const diasOcupados = {
-      "2025-10-25": "lleno",
-      "2025-10-27": "lleno",
-      "2025-10-28": "lleno",
-      "2025-10-29": "lleno",
-      "2025-10-30": "lleno",
-      "2025-10-31": "lleno",
       "2025-11-01": "lleno",
       "2025-11-03": "lleno",
       "2025-11-04": "lleno",
@@ -184,7 +199,7 @@
         form.classList.toggle('active');
         btn.textContent = form.classList.contains('active')
           ? 'Cerrar'
-          : btn.closest('.agenda') ? 'Pedir una cita' : 'Vía e-mail';
+          : btn.closest('.agenda') ? 'Pedir una cita' : 'Ver detalles';
       });
     });
 
@@ -205,10 +220,17 @@
       const form = document.getElementById('form-cita');
       const fechaInput = document.getElementById('fecha');
       const servicios = form.querySelectorAll('input[name="servicios[]"]:checked');
-      
+      const modo = form.querySelectorAll('input[name="modo_operar"]:checked');
+
       // Validar que al menos un servicio esté seleccionado
       if (servicios.length === 0) {
         alert('Por favor, selecciona al menos un servicio.');
+        return false;
+      }
+
+      // Validar que se haya seleccionado modo de operar
+      if (modo.length === 0) {
+        alert('Por favor, selecciona un modo de operar.');
         return false;
       }
       
@@ -218,32 +240,26 @@
         const hoy = new Date();
         hoy.setHours(0, 0, 0, 0);
         
-        // Verificar si la fecha está en días ocupados
         const fechaStr = fechaInput.value;
         if (diasOcupados[fechaStr]) {
           alert('Lo sentimos, la fecha seleccionada ya está ocupada. Por favor, elige otra fecha.');
           return false;
         }
-        
-        // Verificar que la fecha esté dentro del rango del calendario
         if (fechaSeleccionada < new Date(fechaMinima) || fechaSeleccionada > new Date(fechaMaxima)) {
           alert('Por favor, selecciona una fecha que aparezca en el calendario.');
           return false;
         }
       }
-      
-      return true; // El mensaje es opcional, no se valida
+      return true;
     }
 
     function validarFormularioContacto() {
       const form = document.getElementById('form-contacto');
       const mensaje = form.querySelector('textarea[name="mensaje"]');
-      
       if (mensaje.value.trim().length < 10) {
         alert('Por favor, escribe un mensaje más detallado (mínimo 10 caracteres).');
         return false;
       }
-      
       return true;
     }
 
@@ -256,16 +272,11 @@
       form.addEventListener('submit', e => {
         e.preventDefault();
         
-        // Añadir timestamp para prevenir spam
         const timestampInput = form.querySelector('input[name="_timestamp"]');
-        if (timestampInput) {
-          timestampInput.value = Date.now();
-        }
+        if (timestampInput) timestampInput.value = Date.now();
         
-        // Validar honeypot
         const honeyInput = form.querySelector('input[name="_honey"]');
         if (honeyInput && honeyInput.value !== '') {
-          // Bot detectado, no enviar
           mensaje.textContent = 'Mensaje enviado (simulado para bots)';
           mensaje.classList.add('visible');
           form.reset();
@@ -273,12 +284,8 @@
           return;
         }
         
-        // Validación personalizada
-        if (validacionFunc && !validacionFunc()) {
-          return;
-        }
+        if (validacionFunc && !validacionFunc()) return;
         
-        // Deshabilitar botón para prevenir múltiples envíos
         submitBtn.disabled = true;
         submitBtn.textContent = 'Enviando...';
         
@@ -300,15 +307,13 @@
       });
     }
 
-    // CALENDARIO MEJORADO - Maneja automáticamente cambios de año
+    // CALENDARIO MEJORADO
     function generarCalendario() {
       const calendario = document.getElementById('calendario');
       calendario.innerHTML = '';
       const hoy = new Date();
       const añoActual = hoy.getFullYear();
       const mesActual = hoy.getMonth();
-      
-      // Calcular los dos meses a mostrar (maneja cambio de año automáticamente)
       const meses = [];
       for (let i = 0; i < 2; i++) {
         const mesIndex = mesActual + i;
@@ -317,13 +322,11 @@
         meses.push({ año, mes });
       }
 
-      // Calcular fechas mínima y máxima
       const primerMes = new Date(meses[0].año, meses[0].mes, 1);
       const ultimoMes = new Date(meses[1].año, meses[1].mes + 1, 0);
       fechaMinima = primerMes.toISOString().split('T')[0];
       fechaMaxima = ultimoMes.toISOString().split('T')[0];
 
-      // Configurar el input de fecha
       const fechaInput = document.getElementById('fecha');
       if (fechaInput) {
         fechaInput.min = fechaMinima;
@@ -333,7 +336,6 @@
       meses.forEach(({año, mes}, i) => {
         const fecha = new Date(año, mes, 1);
         const nombreMes = fecha.toLocaleString('es-ES', { month: 'long' });
-
         const titulo = document.createElement('div');
         titulo.className = 'mes-calendario';
         titulo.textContent = `${nombreMes.toUpperCase()} ${año}`;
@@ -360,11 +362,9 @@
           diaDiv.className = 'dia';
           const fechaStr = `${año}-${String(mes + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
           diaDiv.textContent = d;
-
           const fechaDia = new Date(año, mes, d);
           if(fechaDia < hoy) diaDiv.classList.add('ayer');
           if(diasOcupados[fechaStr] && fechaDia >= hoy) diaDiv.classList.add('lleno');
-
           calendario.appendChild(diaDiv);
         }
 
@@ -376,14 +376,12 @@
       });
     }
 
-    // Inicializar formularios con validación
     document.addEventListener('DOMContentLoaded', function() {
       generarCalendario();
       manejarFormulario('form-cita', 'mensaje-cita', validarFormularioCita);
       manejarFormulario('form-contacto', 'mensaje-contacto', validarFormularioContacto);
     });
 
-    // Scroll suave menú
     document.querySelectorAll('.nav a').forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
@@ -392,7 +390,6 @@
       });
     });
 
-    // Menú fijo al scroll
     const header = document.getElementById('header');
     const heroHeight = document.querySelector('.hero').offsetHeight;
     window.addEventListener('scroll', () => {
@@ -403,17 +400,13 @@
       btn.style.display = (window.scrollY > 300) ? 'block' : 'none';
     });
 
-    // Scroll top
     document.getElementById('scrollTopBtn').addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // Toggle menú hamburguesa móvil
     document.getElementById('menu-toggle').addEventListener('click', () => {
       document.querySelector('.menu').classList.toggle('active');
     });
   </script>
 </body>
-
 </html>
-

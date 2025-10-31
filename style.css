@@ -156,13 +156,32 @@ h2 {
   height: auto;
 }
 
+/* NUEVO BLOQUE MODO DE OPERAR */
+.modo-operar .toggle-form {
+  background-color: #222;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #dbbb59;
+  text-align: left;
+}
+
+.modo-operar .toggle-form p {
+  margin-bottom: 10px;
+  line-height: 1.5;
+  color: #e2e1de;
+  font-family: 'Cinzel', serif;
+}
+
+.modo-operar .toggle-form.active {
+  display: block;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .imagen-seccion { width: 100%; margin-bottom: 30px; }
   h2 { font-size: 1.8rem; }
   .logo-hero { width: 300px; }
 
-  /* Menú hamburguesa */
   .menu-toggle { display: block; }
   .nav ul.menu {
     flex-direction: column;
